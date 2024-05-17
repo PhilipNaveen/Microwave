@@ -16,18 +16,18 @@ Microwave programs are written in files with a `.mw` extension. Start writing Mi
 
 Microwave has a pretty basic instruction set, which is largely inspired by COW. These are the complete set of instructions:
 
-`mmm`: Start cooking.
-`mMm`: Increase power level.
+-`mmm`: Start cooking.
+-`mMm`: Increase power level.
 -'mmM`: Decrease power level.
-`mMM`: Pause cooking.
-`Mmm`: Open the door.
-`MMm`: Close the door.
+-`mMM`: Pause cooking.
+-`Mmm`: Open the door.
+-`MMm`: Close the door.
 - `MmM`: Set timer.
-`MMM`: Check timer status.
+-`MMM`: Check timer status.
 - `beep`: emit a beep sound.
-`Beep`: Emit multiple beep sounds.
-`beeP`: Pause cooking and prompt for user input.
-`BEEP`: Print the timer countdown.
+-`Beep`: Emit multiple beep sounds.
+-`beeP`: Pause cooking and prompt for user input.
+-`BEEP`: Print the timer countdown.
 
 ### Memory Manipulation
 
@@ -41,7 +41,7 @@ To make this language as basic as possible, i.e., easy to write for but excrucia
 
 Microwave code interacts with the user with input and output commands:
 
-`Mmm`: Read a character from the input (door open) and store it in memory.
+-`Mmm`: Read a character from the input (door open) and store it in memory.
 - `beeP`: prompt the user for input (pause cooking) and store it in memory.
 - `BEEP`: Print the timer countdown to the output (display).
 
