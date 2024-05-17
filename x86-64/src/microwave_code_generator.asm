@@ -13,10 +13,7 @@ main:
     int 0x80
     mov edi, eax       ; Store file descriptor in edi
 
-    ; Generate COW code based on parsed commands
-    ; Example: "moo" for 'm', "MOO" for 'M', etc.
 
-    ; Write generated COW code to output file
 
     ; Close output file
     mov eax, 6         ; sys_close syscall number
