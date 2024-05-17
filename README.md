@@ -16,25 +16,25 @@ Microwave programs are written in files with a `.mw` extension. Start writing Mi
 
 Microwave has a pretty basic instruction set, which is largely inspired by COW. These are the complete set of instructions:
 
--`mmm`: Start cooking.
--`mMm`: Increase power level.
--'mmM`: Decrease power level.
--`mMM`: Pause cooking.
--`Mmm`: Open the door.
--`MMm`: Close the door.
+- `mmm`: Start cooking.
+- `mMm`: Increase power level.
+- `mmM`: Decrease power level.
+- `mMM`: Pause cooking.
+- `Mmm`: Open the door.
+- `MMm`: Close the door.
 - `MmM`: Set timer.
--`MMM`: Check timer status.
+- `MMM`: Check timer status.
 - `beep`: emit a beep sound.
--`Beep`: Emit multiple beep sounds.
--`beeP`: Pause cooking and prompt for user input.
--`BEEP`: Print the timer countdown.
+- `Beep`: Emit multiple beep sounds.
+- `beeP`: Pause cooking and prompt for user input.
+- `BEEP`: Print the timer countdown.
 
 ### Memory Manipulation
 
 To make this language as basic as possible, i.e., easy to write for but excruciating to write in, we try and achieve completeness using memory manipulation commands:
 
--'mMm`: Move the memory pointer to the left.
--'mmM`: Move the memory pointer to the right.
+- `mMm`: Move the memory pointer to the left.
+ `mmM`: Move the memory pointer to the right.
 - `MMM`: Reset the memory block to 0.
 
 ### Input and Output
@@ -49,8 +49,8 @@ Microwave code interacts with the user with input and output commands:
 
 These are the microwave's flow commands:
 
--'mmm` and `MMM`: Allow for conditional execution based on the timer status.
--'mMM`: Pause cooking and resume from the previous pause point.
+- `mmm` and `MMM`: Allow for conditional execution based on the timer status.
+- `mMM`: Pause cooking and resume from the previous pause point.
 
 ## Examples
 
