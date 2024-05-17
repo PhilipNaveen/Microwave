@@ -34,14 +34,14 @@ Microwave has a pretty basic instruction set, which is largely inspired by COW. 
 To make this language as basic as possible, i.e., easy to write for but excruciating to write in, we try and achieve completeness using memory manipulation commands:
 
 - `mMm`: Move the memory pointer to the left.
- `mmM`: Move the memory pointer to the right.
+- `mmM`: Move the memory pointer to the right.
 - `MMM`: Reset the memory block to 0.
 
 ### Input and Output
 
 Microwave code interacts with the user with input and output commands:
 
--`Mmm`: Read a character from the input (door open) and store it in memory.
+- `Mmm`: Read a character from the input (door open) and store it in memory.
 - `beeP`: prompt the user for input (pause cooking) and store it in memory.
 - `BEEP`: Print the timer countdown to the output (display).
 
