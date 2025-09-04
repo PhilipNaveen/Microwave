@@ -1,0 +1,12 @@
+mode main() {
+    heat 3;
+    timer(4) {
+        beep("Heating...");
+        heat heat + 1;
+    }
+    if door_closed {
+        beep("Done cooking!");
+    } else {
+        beep("Please close the door!");
+    }
+}
