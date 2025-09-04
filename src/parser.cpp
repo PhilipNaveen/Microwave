@@ -249,10 +249,14 @@ public:
     }
     
     std::unique_ptr<Expr> parseExpr() {
+        std::cout << "parseExpr called, current token: " << static_cast<int>(curr().type) 
+                  << " '" << curr().value << "'" << std::endl;
         return parseAssignment();
     }
     
     std::unique_ptr<Expr> parseAssignment() {
+        std::cout << "parseAssignment called, current token: " << static_cast<int>(curr().type) 
+                  << " '" << curr().value << "'" << std::endl;
         auto expr = parseLogicalOr();
         
         if (curr().type == TokenType::Symbol && 
@@ -270,6 +274,7 @@ public:
     }
     
     std::unique_ptr<Expr> parseLogicalOr() {
+        std::cout << "parseLogicalOr called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parseLogicalAnd();
         
         while (curr().type == TokenType::Symbol && curr().value == "||") {
@@ -378,12 +383,15 @@ public:
     }
     
     std::unique_ptr<Expr> parseAdditive() {
+        std::cout << "parseAdditive called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parseMultiplicative();
         
         while (curr().type == TokenType::Symbol && 
                (curr().value == "+" || curr().value == "-")) {
+            std::cout << "parseAdditive found operator: " << curr().value << std::endl;
             std::string op = curr().value;
             advance();
+            std::cout << "parseAdditive parsing right side, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
             auto right = parseMultiplicative();
             expr = std::make_unique<BinaryExpr>(op, std::move(expr), std::move(right));
         }

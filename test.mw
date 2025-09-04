@@ -35,11 +35,17 @@ mode int main() {
     
     beep("Arithmetic result: " + result);
     
-    // Increment and decrement operators
-    heat++;
-    ++result;
-    temperature--;
-    --heat;
+    // Increment and decrement operators - commented out for debugging
+    // heat++;
+    // ++result;
+    // temperature--;
+    // --heat;
+    
+    // Simple assignments instead
+    heat = heat + 1;
+    result = result + 1;
+    temperature = temperature - 1;
+    heat = heat - 1;
     
     beep("After increment/decrement - heat: " + heat + ", temp: " + temperature);
     
