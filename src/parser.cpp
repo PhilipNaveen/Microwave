@@ -400,6 +400,7 @@ public:
     }
     
     std::unique_ptr<Expr> parseMultiplicative() {
+        std::cout << "parseMultiplicative called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parseUnary();
         
         while (curr().type == TokenType::Symbol && 
@@ -414,6 +415,7 @@ public:
     }
     
     std::unique_ptr<Expr> parseUnary() {
+        std::cout << "parseUnary called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         if (curr().type == TokenType::Symbol && 
             (curr().value == "++" || curr().value == "--" || curr().value == "!" || 
              curr().value == "~" || curr().value == "+" || curr().value == "-")) {
@@ -427,11 +429,13 @@ public:
     }
     
     std::unique_ptr<Expr> parsePostfix() {
+        std::cout << "parsePostfix called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parsePrimary();
         
         while (true) {
             if (curr().type == TokenType::Symbol && curr().value == "(") {
                 // Function call
+                std::cout << "parsePostfix: function call detected" << std::endl;
                 advance();
                 auto call = std::make_unique<CallExpr>(std::move(expr));
                 while (curr().type != TokenType::Symbol || curr().value != ")") {
@@ -444,6 +448,7 @@ public:
                 expr = std::move(call);
             } else if (curr().type == TokenType::Symbol && curr().value == "[") {
                 // Array access
+                std::cout << "parsePostfix: array access detected" << std::endl;
                 advance();
                 auto index = parseExpr();
                 match(TokenType::Symbol, "]");
@@ -451,10 +456,12 @@ public:
             } else if (curr().type == TokenType::Symbol && 
                        (curr().value == "++" || curr().value == "--")) {
                 // Postfix increment/decrement
+                std::cout << "parsePostfix: postfix operator detected" << std::endl;
                 std::string op = curr().value;
                 advance();
                 expr = std::make_unique<UnaryExpr>(op, std::move(expr), false);
             } else {
+                std::cout << "parsePostfix: breaking, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
                 break;
             }
         }

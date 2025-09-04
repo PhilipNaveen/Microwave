@@ -1,0 +1,4 @@
+mode int main() {
+    beep("hello");
+    return 0;
+}

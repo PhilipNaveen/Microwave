@@ -1,0 +1,6 @@
+// Simple test for debugging
+mode int main() {
+    int a = 5;
+    int b = a + 10;
+    return 0;
+}
