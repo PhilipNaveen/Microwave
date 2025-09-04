@@ -1,6 +1,10 @@
 #include "codegen.h"
 #include <sstream>
-#include <algorithm>
+#include <algor                    if (leftStr && rightVar) {
+                        // String + variable - generate temp_str after sprintf
+                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << ") > 0 ? temp_str : temp_str)";
+                        return;
+                    }
 
 class CodeGenerator {
     std::stringstream code;
@@ -28,7 +32,12 @@ class CodeGenerator {
         } else if (auto boolean = dynamic_cast<const BoolExpr*>(&expr)) {
             code << (boolean->value ? "1" : "0");
         } else if (auto var = dynamic_cast<const VarExpr*>(&expr)) {
-            code << var->name;
+            // Map Microwave keywords to C equivalents
+            if (var->name == "beep") {
+                code << "printf";
+            } else {
+                code << var->name;
+            }
         } else if (auto bin = dynamic_cast<const BinaryExpr*>(&expr)) {
             if (bin->op == "=") {
                 generateExpr(*bin->left);
@@ -43,6 +52,18 @@ class CodeGenerator {
                 code << " || ";
                 generateExpr(*bin->right);
             } else {
+                // Check for string concatenation
+                if (bin->op == "+") {
+                    auto leftStr = dynamic_cast<const StringExpr*>(bin->left.get());
+                    auto rightVar = dynamic_cast<const VarExpr*>(bin->right.get());
+                    
+                    if (leftStr && rightVar) {
+                        // String + variable - generate sprintf call and return temp_str
+                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << ") ? temp_str : temp_str)";
+                        return;
+                    }
+                }
+                
                 code << "(";
                 generateExpr(*bin->left);
                 code << " " << bin->op << " ";
@@ -211,7 +232,9 @@ class CodeGenerator {
 public:
     std::string generate(const Program& program) {
         code << "#include <stdio.h>\n";
-        code << "#include <math.h>\n\n";
+        code << "#include <math.h>\n";
+        code << "#include <string.h>\n\n";
+        code << "char temp_str[256];\n";
         code << "int heat = 0;\n";
         code << "int door_closed = 1;\n";
         code << "int door_open = 0;\n\n";

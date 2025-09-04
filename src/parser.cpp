@@ -101,12 +101,10 @@ public:
     }
     
     std::unique_ptr<Stmt> parseStmt() {
-        std::cout << "parseStmt called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         // Variable declarations
         if (curr().type == TokenType::Keyword && 
             (curr().value == "int" || curr().value == "float" || curr().value == "string" || 
              curr().value == "bool" || curr().value == "auto")) {
-            std::cout << "parseStmt: variable declaration branch" << std::endl;
             std::string type = curr().value;
             advance();
             
@@ -196,11 +194,6 @@ public:
         }
         
         // Microwave-specific statements
-        if (match(TokenType::Keyword, "heat")) {
-            auto expr = parseExpr();
-            match(TokenType::Symbol, ";");
-            return std::make_unique<HeatStmt>(std::move(expr));
-        }
         if (match(TokenType::Keyword, "defrost")) {
             if (curr().type != TokenType::Identifier) {
                 throw std::runtime_error("Expected variable name after defrost");
@@ -238,21 +231,16 @@ public:
         }
         
         // Expression statement
-        std::cout << "parseStmt: expression statement branch" << std::endl;
         auto expr = parseExpr();
         match(TokenType::Symbol, ";");
         return std::make_unique<ExprStmt>(std::move(expr));
     }
     
     std::unique_ptr<Expr> parseExpr() {
-        std::cout << "parseExpr called, current token: " << static_cast<int>(curr().type) 
-                  << " '" << curr().value << "'" << std::endl;
         return parseAssignment();
     }
     
     std::unique_ptr<Expr> parseAssignment() {
-        std::cout << "parseAssignment called, current token: " << static_cast<int>(curr().type) 
-                  << " '" << curr().value << "'" << std::endl;
         auto expr = parseLogicalOr();
         
         if (curr().type == TokenType::Symbol && 
@@ -270,7 +258,6 @@ public:
     }
     
     std::unique_ptr<Expr> parseLogicalOr() {
-        std::cout << "parseLogicalOr called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parseLogicalAnd();
         
         while (curr().type == TokenType::Symbol && curr().value == "||") {
@@ -379,15 +366,12 @@ public:
     }
     
     std::unique_ptr<Expr> parseAdditive() {
-        std::cout << "parseAdditive called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parseMultiplicative();
         
         while (curr().type == TokenType::Symbol && 
                (curr().value == "+" || curr().value == "-")) {
-            std::cout << "parseAdditive found operator: " << curr().value << std::endl;
             std::string op = curr().value;
             advance();
-            std::cout << "parseAdditive parsing right side, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
             auto right = parseMultiplicative();
             expr = std::make_unique<BinaryExpr>(op, std::move(expr), std::move(right));
         }
@@ -396,7 +380,6 @@ public:
     }
     
     std::unique_ptr<Expr> parseMultiplicative() {
-        std::cout << "parseMultiplicative called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parseUnary();
         
         while (curr().type == TokenType::Symbol && 
@@ -411,7 +394,6 @@ public:
     }
     
     std::unique_ptr<Expr> parseUnary() {
-        std::cout << "parseUnary called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         if (curr().type == TokenType::Symbol && 
             (curr().value == "++" || curr().value == "--" || curr().value == "!" || 
              curr().value == "~" || curr().value == "+" || curr().value == "-")) {
@@ -425,14 +407,11 @@ public:
     }
     
     std::unique_ptr<Expr> parsePostfix() {
-        std::cout << "parsePostfix called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parsePrimary();
-        std::cout << "parsePostfix after parsePrimary, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         
         while (true) {
             if (curr().type == TokenType::Symbol && curr().value == "(") {
                 // Function call
-                std::cout << "parsePostfix: function call detected" << std::endl;
                 advance();
                 auto call = std::make_unique<CallExpr>(std::move(expr));
                 while (curr().type != TokenType::Symbol || curr().value != ")") {
@@ -445,7 +424,6 @@ public:
                 expr = std::move(call);
             } else if (curr().type == TokenType::Symbol && curr().value == "[") {
                 // Array access
-                std::cout << "parsePostfix: array access detected" << std::endl;
                 advance();
                 auto index = parseExpr();
                 match(TokenType::Symbol, "]");
@@ -453,12 +431,10 @@ public:
             } else if (curr().type == TokenType::Symbol && 
                        (curr().value == "++" || curr().value == "--")) {
                 // Postfix increment/decrement
-                std::cout << "parsePostfix: postfix operator detected" << std::endl;
                 std::string op = curr().value;
                 advance();
                 expr = std::make_unique<UnaryExpr>(op, std::move(expr), false);
             } else {
-                std::cout << "parsePostfix: breaking, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
                 break;
             }
         }
