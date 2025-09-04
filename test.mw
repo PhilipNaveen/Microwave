@@ -126,16 +126,26 @@ mode int main() {
         beep("Complex condition is true!");
     }
     
-    // Lambda expression (simple example)
-    auto multiplier = [](int x) -> int {
-        return x * 2;
-    };
+    // Lambda expression (simple example) - commented out for now
+    // auto multiplier = [](int x) -> int {
+    //     return x * 2;
+    // };
+    // int doubled = multiplier(heat);
+    // beep("Doubled heat: " + doubled);
     
-    int doubled = multiplier(heat);
+    // Simple multiplication instead
+    int doubled = heat * 2;
     beep("Doubled heat: " + doubled);
     
-    // Ternary operator example
-    string status = (heat > 10) ? "Too hot" : "Just right";
+    // Ternary operator example - commented out for now
+    // string status = (heat > 10) ? "Too hot" : "Just right";
+    // beep("Status: " + status);
+    
+    // Simple conditional instead
+    string status = "Just right";
+    if (heat > 10) {
+        status = "Too hot";
+    }
     beep("Status: " + status);
     
     // Assignment operators

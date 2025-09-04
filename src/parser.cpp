@@ -63,6 +63,17 @@ public:
                  curr().value == "bool" || curr().value == "auto")) {
                 paramType = curr().value;
                 advance();
+                
+                // Check for array type (int[], float[], etc.)
+                if (curr().type == TokenType::Symbol && curr().value == "[") {
+                    advance(); // consume '['
+                    if (curr().type == TokenType::Symbol && curr().value == "]") {
+                        advance(); // consume ']'
+                        paramType += "[]";
+                    } else {
+                        throw std::runtime_error("Expected ']' after '[' in array type");
+                    }
+                }
             }
             
             // Parse parameter name
@@ -96,7 +107,19 @@ public:
              curr().value == "bool" || curr().value == "auto")) {
             std::string type = curr().value;
             advance();
-            if (curr().type != TokenType::Identifier) {
+            
+            // Check for array type (int[], float[], etc.)
+            if (curr().type == TokenType::Symbol && curr().value == "[") {
+                advance(); // consume '['
+                if (curr().type == TokenType::Symbol && curr().value == "]") {
+                    advance(); // consume ']'
+                    type += "[]";
+                } else {
+                    throw std::runtime_error("Expected ']' after '[' in array type");
+                }
+            }
+            
+            if (curr().type != TokenType::Identifier && curr().type != TokenType::Keyword) {
                 throw std::runtime_error("Expected variable name");
             }
             std::string name = curr().value;
@@ -454,6 +477,19 @@ public:
             match(TokenType::Symbol, ")");
             return expr;
         }
+        if (curr().type == TokenType::Symbol && curr().value == "{") {
+            // Array literal
+            advance();
+            auto arrayLit = std::make_unique<ArrayLiteralExpr>();
+            while (curr().type != TokenType::Symbol || curr().value != "}") {
+                arrayLit->elements.push_back(parseExpr());
+                if (curr().type == TokenType::Symbol && curr().value == ",") {
+                    advance();
+                }
+            }
+            match(TokenType::Symbol, "}");
+            return arrayLit;
+        }
         if (curr().type == TokenType::Keyword && curr().value == "lambda") {
             return parseLambda();
         }
@@ -462,6 +498,8 @@ public:
             advance();
             return std::make_unique<VarExpr>(name);
         }
+        std::cout << "parsePrimary failed on token: " << static_cast<int>(curr().type) 
+                  << " '" << curr().value << "'" << std::endl;
         throw std::runtime_error("Unexpected token in expression");
     }
     

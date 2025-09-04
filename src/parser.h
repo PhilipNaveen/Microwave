@@ -54,6 +54,10 @@ struct ArrayExpr : Expr {
     ArrayExpr(std::unique_ptr<Expr> b, std::unique_ptr<Expr> i)
         : base(std::move(b)), index(std::move(i)) {}
 };
+struct ArrayLiteralExpr : Expr {
+    std::vector<std::unique_ptr<Expr>> elements;
+    ArrayLiteralExpr() = default;
+};
 
 // Statements
 struct Stmt : ASTNode {};

@@ -75,6 +75,13 @@ class CodeGenerator {
             code << "[";
             generateExpr(*array->index);
             code << "]";
+        } else if (auto arrayLit = dynamic_cast<const ArrayLiteralExpr*>(&expr)) {
+            code << "{";
+            for (size_t i = 0; i < arrayLit->elements.size(); ++i) {
+                if (i > 0) code << ", ";
+                generateExpr(*arrayLit->elements[i]);
+            }
+            code << "}";
         }
     }
     
