@@ -34,7 +34,11 @@ public:
     }
     
     std::unique_ptr<Function> parseFunction() {
-        // Parse return type (optional, defaults to void)
+        if (!match(TokenType::Keyword, "mode")) {
+            throw std::runtime_error("Expected 'mode'");
+        }
+        
+        // Parse return type (after mode keyword)
         std::string returnType = "void";
         if (curr().type == TokenType::Keyword && 
             (curr().value == "int" || curr().value == "float" || curr().value == "string" || 
@@ -43,9 +47,6 @@ public:
             advance();
         }
         
-        if (!match(TokenType::Keyword, "mode")) {
-            throw std::runtime_error("Expected 'mode'");
-        }
         if (curr().type != TokenType::Identifier) {
             throw std::runtime_error("Expected function name");
         }

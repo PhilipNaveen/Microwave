@@ -67,6 +67,7 @@ class CodeGenerator {
             code << ")";
         } else if (auto lambda = dynamic_cast<const LambdaExpr*>(&expr)) {
             // Generate lambda as inline function
+            (void)lambda; // Use variable to suppress warning
             std::string lambdaName = "_lambda_" + std::to_string(lambdaCounter++);
             code << lambdaName;
         } else if (auto array = dynamic_cast<const ArrayExpr*>(&expr)) {
@@ -108,9 +109,11 @@ class CodeGenerator {
             }
             code << ";\n";
         } else if (auto brk = dynamic_cast<const BreakStmt*>(&stmt)) {
+            (void)brk; // Use variable to suppress warning
             indent();
             code << "break;\n";
         } else if (auto cont = dynamic_cast<const ContinueStmt*>(&stmt)) {
+            (void)cont; // Use variable to suppress warning
             indent();
             code << "continue;\n";
         } else if (auto whileStmt = dynamic_cast<const WhileStmt*>(&stmt)) {

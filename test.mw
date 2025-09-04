@@ -1,12 +1,163 @@
-mode main() {
-    heat 3;
-    timer(4) {
-        beep("Heating...");
-        heat heat + 1;
+// Comprehensive test of Microwave language features
+
+// Helper functions with different return types
+mode int calculate(int a, int b) {
+    return a * b + 10;
+}
+
+mode string formatMessage(string prefix, int value) {
+    return prefix + " " + value;
+}
+
+mode void printArray(int[] arr, int size) {
+    timer(size) {
+        beep(arr[__i]);
     }
-    if door_closed {
-        beep("Done cooking!");
+}
+
+// Main program demonstrating all features
+mode int main() {
+    // Variable declarations with different types
+    int heat = 5;
+    float temperature = 98.6;
+    string message = "Microwave cooking";
+    bool isReady = true;
+    int[] cookTimes = {30, 60, 90, 120};
+    
+    beep("=== Microwave Language Feature Test ===");
+    
+    // Basic arithmetic operations
+    int result = heat + 10;
+    result = result * 2;
+    result = result - 5;
+    result = result / 3;
+    result = result % 4;
+    
+    beep("Arithmetic result: " + result);
+    
+    // Increment and decrement operators
+    heat++;
+    ++result;
+    temperature--;
+    --heat;
+    
+    beep("After increment/decrement - heat: " + heat + ", temp: " + temperature);
+    
+    // Bitwise operations
+    int bits = 15;  // 1111 in binary
+    int shifted = bits << 2;  // Left shift
+    int rightShift = shifted >> 1;  // Right shift
+    int andResult = bits & 7;  // AND with 0111
+    int orResult = bits | 8;   // OR with 1000
+    int xorResult = bits ^ 3;  // XOR with 0011
+    int notResult = ~bits;     // NOT
+    
+    beep("Bitwise operations completed");
+    
+    // Comparison operators
+    if (heat > 3 && temperature < 100.0) {
+        beep("Temperature is in normal range");
+    }
+    
+    if (result <= 10 || isReady == true) {
+        beep("Ready to cook!");
+    }
+    
+    if (heat != 0 && !(result >= 20)) {
+        beep("Conditions met for cooking");
+    }
+    
+    // Timer with more complex conditions
+    timer(3) {
+        beep("Cooking cycle " + (__i + 1));
+        heat = heat + __i * 2;
+        
+        if (__i == 1) {
+            beep("Mid-cycle adjustment");
+            continue;
+        }
+        
+        if (heat > 15) {
+            beep("Heat too high, breaking!");
+            break;
+        }
+    }
+    
+    // While loop example
+    int countdown = 5;
+    while (countdown > 0) {
+        beep("Countdown: " + countdown);
+        countdown--;
+        
+        if (countdown == 2) {
+            beep("Almost done...");
+        }
+    }
+    
+    // For loop example
+    for (int i = 0; i < 4; i++) {
+        beep("Cook time " + i + ": " + cookTimes[i] + " seconds");
+        
+        // Nested conditions
+        if (cookTimes[i] > 60) {
+            beep("Long cooking time!");
+        } else {
+            beep("Quick cooking");
+        }
+    }
+    
+    // Function calls
+    int calculated = calculate(heat, 3);
+    string formatted = formatMessage("Final heat level:", calculated);
+    beep(formatted);
+    
+    // Array operations
+    cookTimes[0] = 45;
+    cookTimes[3] = cookTimes[2] + 30;
+    
+    beep("Updated cook times:");
+    printArray(cookTimes, 4);
+    
+    // Complex expressions
+    int complex = (heat * 2 + temperature / 2) % 10;
+    bool complexCondition = (complex > 5) && ((heat << 1) != (temperature >> 1));
+    
+    if (complexCondition) {
+        beep("Complex condition is true!");
+    }
+    
+    // Lambda expression (simple example)
+    auto multiplier = [](int x) -> int {
+        return x * 2;
+    };
+    
+    int doubled = multiplier(heat);
+    beep("Doubled heat: " + doubled);
+    
+    // Ternary operator example
+    string status = (heat > 10) ? "Too hot" : "Just right";
+    beep("Status: " + status);
+    
+    // Assignment operators
+    heat += 5;
+    result *= 2;
+    temperature /= 1.5;
+    bits <<= 1;
+    
+    beep("After assignment operators - heat: " + heat);
+    
+    // Final check with door status
+    if (door_closed) {
+        beep("Cooking complete! Door is closed.");
+        beep("Final temperature: " + temperature);
+        beep("Final heat level: " + heat);
+        defrost heat;  // Reset heat
+        beep("Heat reset to: " + heat);
     } else {
-        beep("Please close the door!");
+        beep("Warning: Door is open!");
     }
+    
+    beep("=== Test Complete ===");
+    
+    return 0;
 }

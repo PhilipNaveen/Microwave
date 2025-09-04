@@ -27,6 +27,15 @@ std::vector<Token> tokenize(const std::string& source) {
             continue; 
         }
         
+        // Skip line comments
+        if (c == '/' && i + 1 < n && source[i + 1] == '/') {
+            // Skip until end of line
+            while (i < n && source[i] != '\n') {
+                ++i; ++col;
+            }
+            continue;
+        }
+        
         // Identifier or keyword
         if (std::isalpha(c) || c == '_') {
             size_t start = i;
