@@ -43,12 +43,6 @@ int main(int argc, char* argv[]) {
         auto tokens = tokenize(source);
         std::cout << "Tokenized " << tokens.size() << " tokens." << std::endl;
         
-        // Debug: Print tokens
-        for (size_t i = 0; i < tokens.size() && i < 10; ++i) {
-            std::cout << "Token " << i << ": " << static_cast<int>(tokens[i].type) 
-                      << " '" << tokens[i].value << "'" << std::endl;
-        }
-        
         // Parse
         auto program = parse(tokens);
         std::cout << "Parsed " << program->functions.size() << " functions." << std::endl;

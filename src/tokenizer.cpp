@@ -4,7 +4,9 @@
 #include <unordered_set>
 
 static const std::unordered_set<std::string> keywords = {
-    "heat", "timer", "beep", "defrost", "mode", "popcorn", "door_closed", "door_open", "if", "else"
+    "heat", "timer", "beep", "defrost", "mode", "popcorn", "door_closed", "door_open", 
+    "if", "else", "while", "for", "break", "continue", "return", "int", "float", 
+    "string", "bool", "true", "false", "lambda", "auto", "void"
 };
 
 std::vector<Token> tokenize(const std::string& source) {
@@ -77,11 +79,44 @@ std::vector<Token> tokenize(const std::string& source) {
             continue;
         }
         
-        // Symbols
-        if (c == '{' || c == '}' || c == '(' || c == ')' || c == ';' || 
-            c == '+' || c == '-' || c == '*' || c == '/' || c == '=') {
-            tokens.push_back({TokenType::Symbol, std::string(1, c), line, col});
+        // Symbols - handle multi-character operators
+        if (c == '+' || c == '-' || c == '*' || c == '/' || c == '=' || c == '<' || c == '>' || 
+            c == '!' || c == '&' || c == '|' || c == '^' || c == '~' || c == '%' ||
+            c == '{' || c == '}' || c == '(' || c == ')' || c == ';' || c == ',' || 
+            c == '[' || c == ']' || c == '.') {
+            
+            int start_col = col;
+            std::string op(1, c);
             ++i; ++col;
+            
+            // Check for multi-character operators
+            if (i < n) {
+                char next = source[i];
+                // Two-character operators
+                if ((c == '+' && next == '+') || (c == '-' && next == '-') ||
+                    (c == '=' && next == '=') || (c == '!' && next == '=') ||
+                    (c == '<' && next == '=') || (c == '>' && next == '=') ||
+                    (c == '<' && next == '<') || (c == '>' && next == '>') ||
+                    (c == '&' && next == '&') || (c == '|' && next == '|') ||
+                    (c == '+' && next == '=') || (c == '-' && next == '=') ||
+                    (c == '*' && next == '=') || (c == '/' && next == '=') ||
+                    (c == '%' && next == '=') || (c == '^' && next == '=') ||
+                    (c == '&' && next == '=') || (c == '|' && next == '=')) {
+                    op += next;
+                    ++i; ++col;
+                    
+                    // Three-character operators
+                    if (i < n && op == "<<" && source[i] == '=') {
+                        op += source[i];
+                        ++i; ++col;
+                    } else if (i < n && op == ">>" && source[i] == '=') {
+                        op += source[i];
+                        ++i; ++col;
+                    }
+                }
+            }
+            
+            tokens.push_back({TokenType::Symbol, op, line, start_col});
             continue;
         }
         
