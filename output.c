@@ -6,7 +6,7 @@ int door_closed = 1;
 int door_open = 0;
 
 int main() {
-    printf("%s\n", "hello");
+    beep;
     return 0;
 return 0;
 }

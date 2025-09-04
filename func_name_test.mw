@@ -1,0 +1,5 @@
+// Test just function name parsing
+mode int main() {
+    beep;
+    return 0;
+}

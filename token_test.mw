@@ -1,0 +1,4 @@
+// Test token types
+mode int main() {
+    return 0;
+}

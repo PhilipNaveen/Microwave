@@ -101,10 +101,12 @@ public:
     }
     
     std::unique_ptr<Stmt> parseStmt() {
+        std::cout << "parseStmt called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         // Variable declarations
         if (curr().type == TokenType::Keyword && 
             (curr().value == "int" || curr().value == "float" || curr().value == "string" || 
              curr().value == "bool" || curr().value == "auto")) {
+            std::cout << "parseStmt: variable declaration branch" << std::endl;
             std::string type = curr().value;
             advance();
             
@@ -199,13 +201,6 @@ public:
             match(TokenType::Symbol, ";");
             return std::make_unique<HeatStmt>(std::move(expr));
         }
-        if (match(TokenType::Keyword, "beep")) {
-            match(TokenType::Symbol, "(");
-            auto expr = parseExpr();
-            match(TokenType::Symbol, ")");
-            match(TokenType::Symbol, ";");
-            return std::make_unique<BeepStmt>(std::move(expr));
-        }
         if (match(TokenType::Keyword, "defrost")) {
             if (curr().type != TokenType::Identifier) {
                 throw std::runtime_error("Expected variable name after defrost");
@@ -243,6 +238,7 @@ public:
         }
         
         // Expression statement
+        std::cout << "parseStmt: expression statement branch" << std::endl;
         auto expr = parseExpr();
         match(TokenType::Symbol, ";");
         return std::make_unique<ExprStmt>(std::move(expr));
@@ -431,6 +427,7 @@ public:
     std::unique_ptr<Expr> parsePostfix() {
         std::cout << "parsePostfix called, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         auto expr = parsePrimary();
+        std::cout << "parsePostfix after parsePrimary, current token: " << static_cast<int>(curr().type) << " '" << curr().value << "'" << std::endl;
         
         while (true) {
             if (curr().type == TokenType::Symbol && curr().value == "(") {
