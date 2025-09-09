@@ -1,57 +1,118 @@
 # Microwave Programming Language
 
-Microwave is a basic esoteric programming language inspired by whitespace and COW. It's extremely minimalistic, but it gets the job done.
+Microwave is an esoteric programming language I implemented in C++. Its syntax and semantics are intentionally unconventional, and have evolved beyond the original "microwave oven command" design. This document details the current language design and features.
+
+---
 
 ## Introduction
 
-This language is a result of two things: boredom and taking CSO last semester in college. The idea of the language is to show you can technically program a computer only using microwave sounds such as humming and beeps. In Microwave, the code is written using a set of simple commands that correspond to common actions performed on a microwave oven, such as heating, setting timers, and checking the status. Though you can technically do anything since Microwave is almost complete, we for sure would not recommend programming anything meaningful in it.
+Microwave is a result of experimental language design inspired by boredom and college coursework. The purpose is to demonstrate that a computer can be programmed using a minimalist, quirky language. The language is not intended for serious development.
 
 ## Getting Started
 
-Microwave programs are written in files with a `.mw` extension. Start writing Microwave code using your favorite text editor. You can write programs in the microwave language, and they can be either interpreted or compiled. These can be written across multiple platforms. Initially, this was done in Python but was found to be extremely slow. Therefore, we wrote it in C, C++, and then x86-64 Assembly. Currently, Rust support is being added.
+- Microwave source files use the `.mw` extension.
+- The compiler parses `.mw` files and generates C code.
+- Supported platforms: Any with a C++14 compiler.
+- To build: See the provided Makefile.
 
-## Language Basics
+## Language Design
 
-### Commands
+### Program Structure
 
-Microwave has a pretty basic instruction set, which is largely inspired by COW. These are the complete set of instructions:
+- Every program consists of **functions** declared with the `mode` keyword.
+- Function syntax:  
+  ```
+  mode <return_type> <function_name>(<params>) { ... }
+  ```
+  - Example return types: `int`, `float`, `string`, `bool`, `void`
 
-- `mmm`: Start cooking.
-- `mMm`: Increase power level.
-- `mmM`: Decrease power level.
-- `mMM`: Pause cooking.
-- `Mmm`: Open the door.
-- `MMm`: Close the door.
-- `MmM`: Set timer.
-- `MMM`: Check timer status.
-- `beep`: emit a beep sound.
-- `Beep`: Emit multiple beep sounds.
-- `beeP`: Pause cooking and prompt for user input.
-- `BEEP`: Print the timer countdown.
+### Types
 
-### Memory Manipulation
+- Supported types: `int`, `float`, `string`, `bool`, `void`
+- Arrays are supported: `int[]`, `float[]`, etc.
 
-To make this language as basic as possible, i.e., easy to write for but excruciating to write in, we try and achieve completeness using memory manipulation commands:
+### Statements
 
-- `mMm`: Move the memory pointer to the left.
-- `mmM`: Move the memory pointer to the right.
-- `MMM`: Reset the memory block to 0.
+- **Variable Declaration:**  
+  `int x = 5;`  
+  `string msg = "hello";`
+- **Assignment:**  
+  `x = x + 1;`
+- **Loops:**  
+  - While loop:  
+    `while (x < 10) { ... }`
+  - For loop:  
+    `for (int i = 0; i < n; i = i + 1) { ... }`
+  - Timer loop:  
+    `timer (5) { ... }` (executes the block 5 times)
+- **Conditionals:**  
+  - If statement:  
+    `if (x == 0) { ... } else { ... }`
+- **Return, break, continue:**  
+  - `return <expr>;`
+  - `break;`
+  - `continue;`
+- **Defrost statement:**  
+  - `defrost <var>;` (sets a variable to zero)
 
-### Input and Output
+### Expressions
 
-Microwave code interacts with the user with input and output commands:
+- Numeric, string, boolean, variable references.
+- Binary operators: `+`, `-`, `*`, `/`, `%`, `&&`, `||`, etc.
+- Unary operators: `-`, `!`, prefix/postfix `++`, `--`
+- Function calls and lambdas.
 
-- `Mmm`: Read a character from the input (door open) and store it in memory.
-- `beeP`: prompt the user for input (pause cooking) and store it in memory.
-- `BEEP`: Print the timer countdown to the output (display).
+### Lambdas
 
-### Flow Control
+- Anonymous functions can be declared using the `lambda` keyword:
+  ```
+  lambda (a, b) {
+      return a + b;
+  }
+  ```
 
-These are the microwave's flow commands:
+### Memory and Control
 
-- `mmm` and `MMM`: Allow for conditional execution based on the timer status.
-- `mMM`: Pause cooking and resume from the previous pause point.
+- Memory manipulation is handled via variable assignments and array operations, not via oven-themed commands.
+- The previous "microwave sound" commands are deprecated in favor of standard C-like syntax.
 
-## Examples
+### Input/Output
 
-There are no examples; I haven't come up with any so far. Sorry!
+- Output is generally performed via the `beep` keyword mapped to `printf` in generated C code:
+  - Example:  
+    `beep "Hello World";` produces a print statement.
+- Input and custom I/O may be provided via user-defined functions.
+
+## Example (current style)
+
+```c
+mode int main() {
+    int x = 0;
+    while (x < 10) {
+        beep x;
+        x = x + 1;
+    }
+    return 0;
+}
+```
+
+## Building & Usage
+
+To build the compiler:
+```
+make
+```
+To compile a Microwave program:
+```
+./microwave source.mw output.c
+```
+
+## Summary of Changes
+
+- The language now uses standard imperative syntax and supports functions, types, expressions, and control flow similar to C/C++.
+- The quirky microwave-sound commands have been replaced with more conventional programming statements.
+- The language supports lambdas, arrays, and timer-based loops.
+
+---
+
+For more details, see the source files in `src/` (`parser.h`, `parser.cpp`, `codegen.cpp`).
