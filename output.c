@@ -10,7 +10,7 @@ int door_open = 0;
 int main() {
     int result = 42;
     int heat = 5;
-    printf((sprintf(temp_str, "Arithmetic result: %d", result) ? temp_str : temp_str));
+    printf((sprintf(temp_str, "Arithmetic result: %d", result), temp_str));
     heat = (heat + 1);
     return 0;
 return 0;

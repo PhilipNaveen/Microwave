@@ -2,11 +2,6 @@
 #include <sstream>
 #include <algorithm>
 
-                    if (leftStr && rightVar) {
-                        // String + variable - use sprintf and return temp_str
-                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << "), temp_str)";
-                        return;
-                    }
 
 class CodeGenerator {
     std::stringstream code;
