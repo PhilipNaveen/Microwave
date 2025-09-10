@@ -1,8 +1,10 @@
 #include "codegen.h"
 #include <sstream>
-#include <algor                    if (leftStr && rightVar) {
-                        // String + variable - generate temp_str after sprintf
-                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << ") > 0 ? temp_str : temp_str)";
+#include <algorithm>
+
+                    if (leftStr && rightVar) {
+                        // String + variable - use sprintf and return temp_str
+                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << "), temp_str)";
                         return;
                     }
 
@@ -58,8 +60,8 @@ class CodeGenerator {
                     auto rightVar = dynamic_cast<const VarExpr*>(bin->right.get());
                     
                     if (leftStr && rightVar) {
-                        // String + variable - generate sprintf call and return temp_str
-                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << ") ? temp_str : temp_str)";
+                        // String + variable - use sprintf and return temp_str  
+                        code << "(sprintf(temp_str, \"" << leftStr->value << "%d\", " << rightVar->name << "), temp_str)";
                         return;
                     }
                 }
