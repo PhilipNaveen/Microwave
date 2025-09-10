@@ -1,5 +1,5 @@
 // Test beep as variable
 mode int main() {
-    beep;
+    beep("Test beep");
     return 0;
 }

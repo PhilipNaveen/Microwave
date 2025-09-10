@@ -1,6 +1,6 @@
 // Test string concatenation in function call
 mode int main() {
     int result = 42;
-    beep("Result: " + result);
+    beep("Result: %d", result);
     return 0;
 }

@@ -2,7 +2,7 @@
 mode int main() {
     int result = 42;
     int heat = 5;
-    beep("Arithmetic result: " + result);
+    beep("Arithmetic result: %d", result);
     heat = heat + 1;
     return 0;
 }

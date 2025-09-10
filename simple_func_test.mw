@@ -1,4 +1,4 @@
 mode int main() {
-    beep("hello");
+    printf("\a"); /* ASCII Bell character */
     return 0;
 }

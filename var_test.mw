@@ -1,6 +1,6 @@
 // Test just variable name
 mode int main() {
     int x = 5;
-    x;
+    beep("%d", x);
     return 0;
 }
