@@ -1,12 +1,12 @@
 # Microwave Programming Language
 
-Microwave is an esoteric programming language I implemented in C++. Its syntax and semantics are intentionally unconventional, and have evolved beyond the original "microwave oven command" design. This document details the current language design and features.
+Microwave is an estoeric programming language I created in 2024. The original microwave language was based on COW. While technically Turing-complete, it was utterly unusable. This repo serves as a total overhaul of the language, keeping the original Microwave theme, but improving the language syntax to operate similarly to Python, or C. The purpose of this language is to create a fun, minimalist, aand unserious language. While this language can be interpreted into C, and then compiled to an executable, it's not intended for use on genuine development projects.
 
 ---
 
 ## Introduction
 
-Microwave is a result of experimental language design inspired by boredom and college coursework. The purpose is to demonstrate that a computer can be programmed using a minimalist, quirky language. The language is not intended for serious development.
+This is the second variant of the Microwave programming language. Microwave 1-1.4 was inspired by ToyG (by Graham in CS2130 @ UVA). The relic of a language can be seen here: https://esolangs.org/wiki/Microwave
 
 ## Getting Started
 
